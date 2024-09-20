@@ -15,4 +15,11 @@ export class MovieInfoService {
     );
     return response;
   }
+
+  async findRandomlyMovie() {
+    const movies = await this.findAll();
+    const randomIndex = Math.floor(Math.random() * movies.length);
+
+    return movies[randomIndex];
+  }
 }

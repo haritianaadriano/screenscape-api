@@ -7,7 +7,7 @@ import { MovieInfoService } from '../service/movieinfo.service';
 export class MovieInfoController {
   constructor(private readonly movieInfoService: MovieInfoService) {}
 
-  @Get('movies')
+  @Get('/movies')
   @ApiTags('movies')
   @ApiCreatedResponse({
     description: 'Returns a list of movies',
@@ -16,5 +16,15 @@ export class MovieInfoController {
   })
   getMovies(): Promise<MovieInfoApi[]> {
     return this.movieInfoService.findAll();
+  }
+
+  @Get('/movies/randomly')
+  @ApiTags('movies')
+  @ApiCreatedResponse({
+    description: 'Returns a randomly selected movie',
+    type: MovieInfoApi,
+  })
+  getRandomlyMovie(): Promise<MovieInfoApi> {
+    return this.movieInfoService.findRandomlyMovie();
   }
 }
