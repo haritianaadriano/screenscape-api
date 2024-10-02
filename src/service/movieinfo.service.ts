@@ -22,4 +22,22 @@ export class MovieInfoService {
 
     return movies[randomIndex];
   }
+
+  async findMoviesByGenre(genre: string) {
+    const response = await firstValueFrom(
+      this.http
+        .get(
+          `https://screenscape-scrapper-api.onrender.com/movies?type=${genre}`,
+        )
+        .pipe(map((res: AxiosResponse) => res.data)),
+    );
+    return response;
+  }
+
+  async findRandomlyMoviesByGenre(genre: string) {
+    const movies = await this.findMoviesByGenre(genre);
+    const randomIndex = Math.floor(Math.random() * movies.length);
+
+    return movies[randomIndex];
+  }
 }
