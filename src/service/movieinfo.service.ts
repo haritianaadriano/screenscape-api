@@ -35,7 +35,8 @@ export class MovieInfoService {
     return response;
   }
 
-  async findRandomlyMoviesByGenre(genre: string) {
+  async findRandomlyByEmotion(emotion: EmotionEnum) {
+    const genre = this.defineGenreByEmotion(emotion);
     const movies = await this.findMoviesByGenre(genre);
     const randomIndex = Math.floor(Math.random() * movies.length);
 
