@@ -1,7 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { MovieInfoApi } from './rest/movieinfo.rest';
 import { MovieInfoService } from '../service/movieinfo.service';
+import { EmotionEnum } from './rest/enum';
 
 @Controller()
 export class MovieInfoController {
@@ -22,9 +23,10 @@ export class MovieInfoController {
   @ApiCreatedResponse({
     description: 'Returns a randomly movie by genre',
   })
-  getRandomlyMoviesByGenre(
-    @Query('genre') genre: string,
+  @ApiQuery({ name: 'emotion', enum: EmotionEnum })
+  getRandomlyMoviesByEmotion(
+    @Query('emotion') emotion: EmotionEnum,
   ): Promise<MovieInfoApi> {
-    return this.movieInfoService.findRandomlyMoviesByGenre(genre);
+    return this.movieInfoService.findRandomlyByEmotion(emotion);
   }
 }

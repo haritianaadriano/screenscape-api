@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { firstValueFrom, map } from 'rxjs';
+import { EmotionEnum } from 'src/controller/rest/enum';
 
 @Injectable()
 export class MovieInfoService {
@@ -34,10 +35,36 @@ export class MovieInfoService {
     return response;
   }
 
-  async findRandomlyMoviesByGenre(genre: string) {
+  async findRandomlyByEmotion(emotion: EmotionEnum) {
+    const genre = this.defineGenreByEmotion(emotion);
     const movies = await this.findMoviesByGenre(genre);
     const randomIndex = Math.floor(Math.random() * movies.length);
 
     return movies[randomIndex];
+  }
+
+  defineGenreByEmotion(emotion: EmotionEnum): string {
+    // NOTE!: available movies genre [comedie, family, horror, animation, romance, action, thriller]
+
+    if ([EmotionEnum.ANGRY, EmotionEnum.SAD].includes(emotion)) {
+      return 'comedie';
+    }
+    if ([EmotionEnum.HAPPY, EmotionEnum.IN_LOVE].includes(emotion)) {
+      return 'romance';
+    }
+    if ([EmotionEnum.BOTH].includes(emotion)) {
+      const glogbalEmotion = [
+        'comedie',
+        'family',
+        'horror',
+        'animation',
+        'romance',
+        'action',
+        'thriller',
+      ];
+      const randomIndex = Math.floor(Math.random() * glogbalEmotion.length);
+
+      return glogbalEmotion[randomIndex];
+    }
   }
 }
