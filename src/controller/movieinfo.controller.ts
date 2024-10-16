@@ -22,11 +22,13 @@ export class MovieInfoController {
   @ApiTags('movies')
   @ApiCreatedResponse({
     description: 'Returns a randomly movie by genre',
+    isArray: true,
+    type: MovieInfoApi,
   })
   @ApiQuery({ name: 'emotion', enum: EmotionEnum })
   getRandomlyMoviesByEmotion(
     @Query('emotion') emotion: EmotionEnum,
-  ): Promise<MovieInfoApi> {
-    return this.movieInfoService.findRandomlyByEmotion(emotion);
+  ): Promise<MovieInfoApi[]> {
+    return this.movieInfoService.findMoviesByEmotion(emotion);
   }
 }
