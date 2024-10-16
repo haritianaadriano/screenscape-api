@@ -24,6 +24,12 @@ export class MovieInfoService {
     return movies[randomIndex];
   }
 
+  async findMoviesByEmotion(emotion: EmotionEnum) {
+    const genre = this.defineGenreByEmotion(emotion);
+    const movies = await this.findMoviesByGenre(genre);
+    return movies;
+  }
+
   async findMoviesByGenre(genre: string) {
     const response = await firstValueFrom(
       this.http
