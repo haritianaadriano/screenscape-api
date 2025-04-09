@@ -11,7 +11,7 @@ export class MovieInfoService {
   async findAll() {
     const response = await firstValueFrom(
       this.http
-        .get('https://screenscape-scrapper-api.onrender.com/movie/trending')
+        .get('https://screenscape-scrapper-api.onrender.com/movie')
         .pipe(map((res: AxiosResponse) => res.data)),
     );
     return response;
