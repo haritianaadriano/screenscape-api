@@ -4,6 +4,7 @@ import { MovieInfoApi } from '../rest/movieinfo.rest';
 export class MovieMapper {
   mapToMovieInfoApi(movie: ExternalMovieInfo): MovieInfoApi {
     const response = new MovieInfoApi();
+    response.id = movie.node.id;
     response.title = movie.node.originalTitleText.text;
     response.isASeries = movie.node.titleType.isEpisode;
     response.categories = movie.node.titleType.categories;

@@ -3,6 +3,9 @@ import { MovieCategory } from './external-movie-info.rest';
 
 export class MovieInfoApi {
   @ApiProperty()
+  id: string;
+
+  @ApiProperty()
   title: string;
 
   @ApiProperty()
