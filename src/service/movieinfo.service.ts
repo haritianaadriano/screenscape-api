@@ -2,22 +2,23 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { firstValueFrom, map } from 'rxjs';
-import { EmotionEnum } from 'src/controller/rest/enum';
+import { EmotionEnum } from '../controller/rest/enum';
+import { ExternalMovieInfo } from '../controller/rest/external-movie-info.rest';
 
 @Injectable()
 export class MovieInfoService {
   constructor(private http: HttpService) {}
 
-  async findAll() {
+  async findAll(): Promise<ExternalMovieInfo[]> {
     const response = await firstValueFrom(
       this.http
-        .get('https://screenscape-scrapper-api.onrender.com/movie')
+        .get('https://screenscape-scrapper-api.onrender.com/movies')
         .pipe(map((res: AxiosResponse) => res.data)),
     );
-    return response;
+    return response.data.topMeterTitles.edges;
   }
 
-  async findRandomlyMovie() {
+  async findRandomlyMovie(): Promise<ExternalMovieInfo> {
     const movies = await this.findAll();
     const randomIndex = Math.floor(Math.random() * movies.length);
 
@@ -30,15 +31,13 @@ export class MovieInfoService {
     return movies;
   }
 
-  async findMoviesByGenre(genre: string) {
+  async findMoviesByGenre(genre: string): Promise<ExternalMovieInfo[]> {
     const response = await firstValueFrom(
       this.http
-        .get(
-          `https://screenscape-scrapper-api.onrender.com/movies?type=${genre}`,
-        )
+        .get(`https://screenscape-scrapper-api.onrender.com/movies`)
         .pipe(map((res: AxiosResponse) => res.data)),
     );
-    return response;
+    return response.data.topMeterTitles.edges;
   }
 
   async findRandomlyMoviesByGenre(genre: string) {

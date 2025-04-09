@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MovieInfoController } from '../controller/movieinfo.controller';
 import { HttpModule } from '@nestjs/axios';
 import { MovieInfoService } from 'src/service/movieinfo.service';
+import { MovieMapper } from 'src/controller/mapper/movie.mapper';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { MovieInfoService } from 'src/service/movieinfo.service';
       maxRedirects: 5,
     }),
   ],
-  providers: [MovieInfoService],
+  providers: [MovieInfoService, MovieMapper],
   controllers: [MovieInfoController],
 })
 export class MovieInfoModule {}

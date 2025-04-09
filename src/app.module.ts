@@ -8,7 +8,7 @@ import { HttpModule } from '@nestjs/axios';
   imports: [
     MovieInfoModule,
     HttpModule.register({
-      timeout: 5000,
+      timeout: 10000,
       maxRedirects: 5,
     }),
   ],

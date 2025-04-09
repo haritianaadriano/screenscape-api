@@ -3,10 +3,14 @@ import { ApiCreatedResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { MovieInfoApi } from './rest/movieinfo.rest';
 import { MovieInfoService } from '../service/movieinfo.service';
 import { EmotionEnum } from './rest/enum';
+import { MovieMapper } from './mapper/movie.mapper';
 
 @Controller()
 export class MovieInfoController {
-  constructor(private readonly movieInfoService: MovieInfoService) {}
+  constructor(
+    private readonly movieInfoService: MovieInfoService,
+    private readonly mapper: MovieMapper,
+  ) {}
 
   @Get('/movies/randomly')
   @ApiTags('movies')
@@ -14,8 +18,10 @@ export class MovieInfoController {
     description: 'Returns a randomly selected movie',
     type: MovieInfoApi,
   })
-  getRandomlyMovie(): Promise<MovieInfoApi> {
-    return this.movieInfoService.findRandomlyMovie();
+  async getRandomlyMovie(): Promise<MovieInfoApi> {
+    return this.mapper.mapToMovieInfoApi(
+      await this.movieInfoService.findRandomlyMovie(),
+    );
   }
 
   @Get('/movies')
@@ -26,9 +32,10 @@ export class MovieInfoController {
     type: MovieInfoApi,
   })
   @ApiQuery({ name: 'emotion', enum: EmotionEnum })
-  getRandomlyMoviesByEmotion(
+  async getRandomlyMoviesByEmotion(
     @Query('emotion') emotion: EmotionEnum,
   ): Promise<MovieInfoApi[]> {
-    return this.movieInfoService.findMoviesByEmotion(emotion);
+    const responses = await this.movieInfoService.findMoviesByEmotion(emotion);
+    return responses.map((movie) => this.mapper.mapToMovieInfoApi(movie));
   }
 }
